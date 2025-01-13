@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Minecraft</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="mystick.png"> <!-- Favicon -->
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>MystickMC - BOT AFK</h1>
+    </header>
+    <main>
+      <section id="bot-info">
+        <h2>Informações do Bot</h2>
+        <p><strong>Coordenadas:</strong> <span id="position">Carregando...</span></p>
+        <p><strong>Vida:</strong> <span id="health">Carregando...</span></p>
+        <p><strong>Fome:</strong> <span id="hunger">Carregando...</span></p>
+        <p><strong>Hora do Jogo:</strong> <span id="gameTime">Carregando...</span></p>
+      </section>
+      <section id="chat-section">
+        <h2>Chat</h2>
+        <div id="chat"></div>
+        <input type="text" id="commandInput" placeholder="Digite um comando ou mensagem" />
+      </section>
+    </main>
+    <footer>
+      <p>Desenvolvido por KillDarkness ❤️</p>
+    </footer>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    // Atualiza as informações do bot
+    socket.on('update', (data) => {
+      document.getElementById('position').innerText = `X: ${data.position.x.toFixed(2)}, Y: ${data.position.y.toFixed(2)}, Z: ${data.position.z.toFixed(2)}`;
+      document.getElementById('health').innerText = data.health.toFixed(2);
+      document.getElementById('hunger').innerText = data.hunger.toFixed(2);
+      document.getElementById('gameTime').innerText = data.gameTime;
+    });
+
+    // Atualiza o chat
+    socket.on('chat', (data) => {
+      const chat = document.getElementById('chat');
+      const isBot = data.isBot || false; // Verifica se é uma mensagem do bot
+      chat.innerHTML += `<p style="color: ${isBot ? '#00d8ff' : '#fff'};"><strong>${data.username === 'MystickBOT' ? 'MystickBOT' : data.username}:</strong> ${data.message}</p>`;
+      chat.scrollTop = chat.scrollHeight;
+    });
+
+    // Envia comandos ao pressionar Enter
+    const input = document.getElementById('commandInput');
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const command = input.value;
+        if (command) {
+          socket.emit('command', command);
+          input.value = '';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
