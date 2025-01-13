@@ -1,0 +1,21 @@
+{
+  "name": "botafkminecraft",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "minecraft-data": "^3.83.1",
+    "minecraft-protocol": "^1.53.0",
+    "minecraft-server-util": "^5.4.4",
+    "mineflayer": "^4.25.0",
+    "socket.io": "^4.8.1"
+  }
+}
